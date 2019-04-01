@@ -1,0 +1,4 @@
+
+output/*.pdf
+node_modules
+*.log

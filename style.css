@@ -1,0 +1,83 @@
+
+body {
+    background: #fff;
+    color: #000;
+    font-size: 1ex;
+    counter-reset: part-number chapter-number index-part-number index-number;
+}
+
+#contents {
+    text-align: center;
+    border-bottom: 1px solid;
+    margin-bottom: 20px;
+}
+
+#contents + ul li {
+    list-style-type: none;
+}
+
+#contents + ul p a {
+    counter-increment: index-part-number;
+}
+
+#contents + ul p a::before {
+    content: "Part " counter(index-part-number, upper-roman) " - ";
+}
+
+#contents + ul ul a {
+    counter-increment: index-number;
+}
+
+#contents + ul ul a::before {
+    content: counter(index-number)". ";
+}
+
+h1 {
+    page-break-before: always !important;
+    padding-top: 100px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 4ex;
+    counter-increment: part-number;
+}
+
+h1::before {
+    content: "Part " counter(part-number, upper-roman);
+    display: block;
+    margin-bottom: 120px;
+}
+
+h2 {
+    page-break-before: always !important;
+    font-weight: bold !important;
+    font-size: 2ex !important;
+    counter-increment: chapter-number;
+}
+
+h2::before {
+    content: counter(chapter-number);
+    margin-right: 10px;
+}
+
+hr {
+    border: 1px black;
+    border-top: double;
+    width: 50%;
+    text-align: center;
+}
+
+.index-title {
+    text-align: center;
+    font-weight: bold;
+    font-size: 2ex;
+}
+
+.index-divider {
+    margin-left: 20px;
+    width: 90%;
+    border: 1px solid black;
+}
+
+a {
+    text-decoration: none
+}
