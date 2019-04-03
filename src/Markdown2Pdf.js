@@ -13,6 +13,10 @@ const html = require('rehype-stringify')
 
 class Markdown2Pdf {
 
+    constructor(cssPath, pdfFilePath) {
+
+    }
+
     generate(fileList, pdfFilePath, config) {
         console.log("Creating intermediate HTML file as '/tmp/md2pdf.html'")
 

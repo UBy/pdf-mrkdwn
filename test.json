@@ -1,17 +1,16 @@
 
 {
     "wkhtmltopdf": {
-        "zoom": "1.5",
+        "zoom": "1.4",
         "pageWidth": "5.5in",
         "pageHeight": "8.5in",
         "footerCenter": "[page]",
         "footerFontSize": "8",
         "footerSpacing": "10",
-        "marginBottom": "24"        
+        "marginBottom": "24"
     },
-
-    "bookName":"MyBook",
-    "inputDir": ".",
-    "outputDir": "default",
-    "cssFile": "default"
+    "name": "MyBook",
+    "input": ".",
+    "output": ".",
+    "css":"./style.css"
 }

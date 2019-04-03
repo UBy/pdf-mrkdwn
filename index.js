@@ -1,44 +1,24 @@
 
 const fs = require('fs')
-const converter = new (require('./src/Markdown2Pdf'))()
-const usage = "Usage: node index.js <chapters dir> <book name>"
+const Markdown2Pdf = require('./src/Markdown2Pdf')
+const opts = require('minimist')(process.argv.slice(2))
+const getConfig = require('./src/getConfig')
+//const usage = "Usage: node index.js <chapters dir> <book name>"
+const config = getConfig(opts)
+const converter = new Markdown2Pdf()
 
-/*
-"bookName":"MyBook",
-"inputDir": ".",
-"outputDir": "default",
-"cssFile": "default"
-*/
+console.log('Conversion configuration:\n', config, '\n')
 
-const chapters = process.argv[2]
-let bookName = process.argv[3]
-const config = require('./config.json')
-
-if(!chapters) {
-    console.log(`\nERROR: Chapter directory argument was missing.\n${usage}\n`)
-    process.exit(1)
-}
-
-if(!bookName) {
-    console.log(`\nERROR: Output book name argument was missing.\n${usage}\n`)
-    process.exit(1)
-}
-
-if (bookName.substr(-4) !== '.pdf') {
-    bookName += '.pdf'
-}
-
-console.log(`Using Markdown files from '${chapters}/*md'`)
-const tmpList = fs.readdirSync(chapters)
+const tmpList = fs.readdirSync(config.inputDir)
 
 const fileList = tmpList.sort().map( fileName => {
     if (fileName && fileName.indexOf('.md') > -1) {
-        return `${chapters}/${fileName}`
+        return `${config.inputDir}/${fileName}`
     }
 })
 
 converter.generate(
     fileList.filter(val => typeof val !== 'undefined'),
-    `${__dirname}/output/${bookName}`,
+    `${config.outputDir}/${config.bookName}.pdf`,
     config
 )
