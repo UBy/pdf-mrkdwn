@@ -1,4 +1,6 @@
 
+pdfMd.css
+pdfMd.json
 output/*.pdf
 node_modules
 *.log

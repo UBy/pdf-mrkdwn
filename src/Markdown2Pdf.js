@@ -44,7 +44,7 @@ class Markdown2Pdf {
         wkhtmltopdf( fs.createReadStream(htmlFile), config.wkhtmltopdf )
             .pipe(fs.createWriteStream(pdfFilePath));
 
-        console.log(`PDF file was created as '${pdfFilePath}'`);
+        console.log(`PDF file was created as '${pdfFilePath}'\n`);
     }
 
     _toHtml(fileList) {
