@@ -1,5 +1,7 @@
 
 module.exports = {
+    "name": "README",
+    "output": ".",
     "wkhtmltopdf": {
         "zoom": "1.5",
         "pageWidth": "5.5in",

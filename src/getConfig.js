@@ -2,15 +2,20 @@
 const fs = require('fs')
 const defaultConfig = require('../config')
 
+// Get a value from an object or a default value if not exists
 const getOpt = (opts, opt, defVal) => opts.hasOwnProperty(opt) ? opts[opt] : defVal
 
-const getCmdAndDefaultConfig = (opts) => {
-    return {
-        bookName:  getOpt(opts, 'name', 'MyBook'),
-        inputDir:  getOpt(opts, 'input', '.'),
-        outputDir: getOpt(opts, 'output', '.'),
-        css:       getOpt(opts, 'css', `${__dirname}/style.css`),
-        wkhtmltopdf: {
+// Parse command line or file options
+const getConfig = (opts) => {
+    const base = {
+        name:   getOpt(opts, 'name',   defaultConfig.name),
+        input:  getOpt(opts, 'input',  __dirname),
+        output: getOpt(opts, 'output', defaultConfig.output),
+        css:    getOpt(opts, 'css',   `${__dirname}/style.css`),
+    }
+
+    if (opts.hasOwnProperty('wkhtmltopdf')) {
+        base.wkhtmltopdf = {
             zoom:           getOpt(opts, 'zoom',           defaultConfig.wkhtmltopdf.zoom),
             pageWidth:      getOpt(opts, 'pageWidth',      defaultConfig.wkhtmltopdf.pageWidth),
             pageHeight:     getOpt(opts, 'pageHeight',     defaultConfig.wkhtmltopdf.pageHeight),
@@ -18,27 +23,6 @@ const getCmdAndDefaultConfig = (opts) => {
             footerFontSize: getOpt(opts, 'footerFontSize', defaultConfig.wkhtmltopdf.footerFontSize),
             footerSpacing:  getOpt(opts, 'footerSpacing',  defaultConfig.wkhtmltopdf.footerSpacing),
             marginBottom:   getOpt(opts, 'marginBottom',   defaultConfig.wkhtmltopdf.marginBottom),
-        }
-    }
-}
-
-const getFileConfig = (fileCfg) => {
-    const base = {
-        bookName:  getOpt(fileCfg, 'name', 'MyBook'),
-        inputDir:  getOpt(fileCfg, 'input', '.'),
-        outputDir: getOpt(fileCfg, 'output', '.'),
-        css:       getOpt(fileCfg, 'css', `${__dirname}/style.css`),
-    }
-
-    if (fileCfg.hasOwnProperty('wkhtmltopdf')) {
-        base.wkhtmltopdf = {
-            zoom:           getOpt(fileCfg, 'zoom',           defaultConfig.wkhtmltopdf.zoom),
-            pageWidth:      getOpt(fileCfg, 'pageWidth',      defaultConfig.wkhtmltopdf.pageWidth),
-            pageHeight:     getOpt(fileCfg, 'pageHeight',     defaultConfig.wkhtmltopdf.pageHeight),
-            footerCenter:   getOpt(fileCfg, 'footerCenter',   defaultConfig.wkhtmltopdf.footerCenter),
-            footerFontSize: getOpt(fileCfg, 'footerFontSize', defaultConfig.wkhtmltopdf.footerFontSize),
-            footerSpacing:  getOpt(fileCfg, 'footerSpacing',  defaultConfig.wkhtmltopdf.footerSpacing),
-            marginBottom:   getOpt(fileCfg, 'marginBottom',   defaultConfig.wkhtmltopdf.marginBottom),
         }
     } else {
         base.wkhtmltopdf = defaultConfig.wkhtmltopdf
@@ -48,32 +32,37 @@ const getFileConfig = (fileCfg) => {
 }
 
 module.exports = (opts) => {
+    // Get command line options
+    let config = getConfig(opts)
+    
+    // Get config file option if exists
     const configFile = getOpt(opts, 'config', null)
-    const cwd = process.cwd()
-    let config = null
 
     if(configFile === null) {
-        return getCmdAndDefaultConfig(opts)
+        return config
+    }
+
+    // Read the config file
+    const cwd = process.cwd()
+    const altConfigFile = `${cwd}/${configFile}`
+    let fileOpts = null
+
+    if (fs.existsSync(configFile)) {
+        fileOpts = JSON.parse(fs.readFileSync(configFile))
+
+    } else if (fs.existsSync(altConfigFile)) {
+        fileOpts = JSON.parse(fs.readFileSync(altConfigFile))
 
     } else {
-        const altConfigFile = `${cwd}/${configFile}`
+        console.error(
+            `Config file was not found in any of these locations:\n` +
+            `- ${configFile}\n` +
+            `- ${altConfigFile}\n`
+        )
 
-        if (fs.existsSync(configFile)) {
-            config = JSON.parse(fs.readFileSync(configFile))
-
-        } else if (fs.existsSync(altConfigFile)) {
-            config = JSON.parse(fs.readFileSync(altConfigFile))
-
-        } else {
-            console.error(
-                `Config file was not found in any of these locations:\n` +
-                `- ${configFile}\n` +
-                `- ${altConfigFile}\n`
-            )
-
-            process.exit(1)
-        }
-
-        return getFileConfig(config)
+        process.exit(1)
     }
+
+    // Merge file options with command line options (the former overwrites the latter)
+    return getConfig(Object.assign(opts, fileOpts))
 }
