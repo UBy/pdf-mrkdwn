@@ -6,10 +6,17 @@
   It is recommended to use the static version of the binary (wkhtmltopdf-static).
 
 
+<<<<<<< HEAD
 ## Usage
+=======
+To see command line options run: `node index.js --help`
+
+Convert multiple Markdown files into a single PDF file
+>>>>>>> 4344c4c5d4b3334a8b435e3b974c6adebdd4a26d
 
 `pdf-markdown [[options...] | --config-file <file>.json | --help] [--verbose]`
 
+<<<<<<< HEAD
 Without options (or `--input` option) the pdf-markdown README file will be created as PDF in the current directory.
 
 
@@ -72,3 +79,7 @@ Config file example (based on default options):
         }
     }
 ```
+=======
+pdf-mrkdwn depends on the `wkhtmltopdf` binary, which needs to be in the path.
+It is recommended to install the **static** version, as it resolves some issues present in the non-static version.
+>>>>>>> 4344c4c5d4b3334a8b435e3b974c6adebdd4a26d
