@@ -10,7 +10,7 @@ Convert multiple Markdown files into a single PDF file
 
 ## Usage
 
-`pdf-markdown [[options...] | --config-file <file>.json | --help] [--verbose]`
+`pdf-markdown --help | [options...] [--config-file <file>.json] [--verbose]`
 
 Without options (or `--input` option) the pdf-markdown README file will be created as PDF in the current directory.
 
