@@ -56,7 +56,7 @@ Without options (or `--input` option) the pdf-markdown README file will be creat
                     Default: 24
 ```
 
-Config file example (based on default options):
+### Config file example (based on default options):
 
 ```
     {
