@@ -1,5 +1,6 @@
 
 const fs = require('fs')
+const path = require('path')
 const defaultConfig = require('../config')
 
 // Get a value from an object or a default value if not exists
@@ -9,9 +10,9 @@ const getOpt = (opts, opt, defVal) => opts.hasOwnProperty(opt) ? opts[opt] : def
 const getConfig = (opts) => {
     const base = {
         name:   getOpt(opts, 'name',   defaultConfig.name),
-        input:  getOpt(opts, 'input',  __dirname),
+        input:  getOpt(opts, 'input',  path.resolve(__dirname, '..')),
         output: getOpt(opts, 'output', defaultConfig.output),
-        css:    getOpt(opts, 'css',   `${__dirname}/style.css`),
+        css:    getOpt(opts, 'css',    path.resolve(__dirname, '..', 'style.css'))
     }
 
     if (opts.hasOwnProperty('wkhtmltopdf')) {

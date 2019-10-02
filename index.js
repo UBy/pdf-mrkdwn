@@ -5,8 +5,6 @@ const Markdown2Pdf = require('./src/Markdown2Pdf')
 const opts = require('minimist')(process.argv.slice(2))
 const getConfig = require('./src/getConfig')
 const getHelp = require('./src/getHelp')
-//const usage = "Usage: node index.js <chapters dir> <book name>"
-const converter = new Markdown2Pdf()
 
 if(opts.hasOwnProperty('help')) {
     console.log(getHelp())
@@ -15,21 +13,18 @@ if(opts.hasOwnProperty('help')) {
 
 const config = getConfig(opts)
 
-if (opts.hasOwnProperty('verbose')) {
-    console.log('Conversion configuration:\n', config, '\n')
-}
+if (opts.cssToPath) {
+    const dir = (opts.cssToPath === '.' || opts.cssToPath === '..') ? path.resolve(process.cwd(), opts.cssToPath) : opts.cssToPath
 
-const tmpList = fs.readdirSync(config.input)
-
-const fileList = tmpList.sort().map( fileName => {
-    if (fileName && fileName.indexOf('.md') > -1) {
-        return `${config.input}/${fileName}`
+    if (!fs.existsSync(dir)) {
+        console.error(`\nError: Unable to create pdfMd.css'. Target directory '${dir}' is not accessible.`)
+        process.exit(1)
     }
 
     const buffer = fs.readFileSync(`${__dirname}/style.css`)
     fs.writeFileSync(`${dir}/pdfMd.css`, buffer);
     process.exit(0)
-})
+}
 
 if (opts.cfgToPath) {
     const dir = (opts.cfgToPath === '.' || opts.cfgToPath === '..') ? path.resolve(process.cwd(), opts.cfgToPath) : opts.cfgToPath
@@ -45,20 +40,29 @@ if (opts.cfgToPath) {
     process.exit(0)
 }
 
-console.log('\nConversion configuration:\n\n', config, '\n')
-const tmpList = fs.readdirSync(config.inputDir)
+const verbose = opts.hasOwnProperty('verbose')
+
+if (verbose) {
+    console.log('Conversion configuration:\n', config, '\n')
+}
+
+const tmpList = fs.readdirSync(config.input)
+console.log("LIST", config.input)
 
 const fileList = tmpList
     .sort()
     .map( fileName => {
         if (fileName && fileName.indexOf('.md') > -1) {
-            return `${config.inputDir}/${fileName}`
+            return `${config.input}/${fileName}`
         }
     })
     .filter(val => typeof val !== 'undefined')
 
 const converter = new Markdown2Pdf()
-console.log('File list: \n', fileList.join('\n'), '\n') 
+
+if (verbose) {
+    console.log('File list: \n', fileList.join('\n'), '\n') 
+}
 
 converter.generate(
     fileList.filter(val => typeof val !== 'undefined'),

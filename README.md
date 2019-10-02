@@ -1,12 +1,10 @@
 
 ## PDF-MRKDWN
 
-* Combine and convert multiple Markdown files into a single PDF file
+* Combine and convert multiple Markdown (.md) files into a single PDF file
 * Configure page layout with settings and CSS.
 * **pdf-mrkdwn** depends on the **wkhtmltopdf** binary, which needs to be in the path. \
   It is recommended to use the static version of the binary (wkhtmltopdf-static).
-
-Convert multiple Markdown files into a single PDF file
 
 ## Usage
 
@@ -56,7 +54,15 @@ Without options (or `--input` option) the pdf-markdown README file will be creat
                     Default: 24
 ```
 
-Config file example (based on default options):
+### Export:
+
+```
+--cssToPath         Exports the default CSS to <provided path>/pdfMd.css
+
+--cfgToPath         Exports the default configuration to <provided path>/pdfMd.json
+```
+
+### Config file example (based on default options):
 
 ```
     {

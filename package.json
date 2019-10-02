@@ -7,6 +7,7 @@
     "start": "node index.js"
   },
   "dependencies": {
+    "json-beautify": "^1.1.1",
     "minimist": "^1.2.0",
     "rehype-autolink-headings": "^2.0.4",
     "rehype-format": "^2.3.1",
