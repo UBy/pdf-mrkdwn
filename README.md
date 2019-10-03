@@ -6,6 +6,15 @@
 * **pdf-mrkdwn** depends on the **wkhtmltopdf** binary, which needs to be in the path. \
   It is recommended to use the static version of the binary (wkhtmltopdf-static).
 
+## About the current release
+
+The default configuration and CSS is suitable for creating standard novels. The next release will focus on providing more presets for other document types.
+
+If the defaults are not suitable for you, you need to create your own CSS and configuration file. To export the defaults use the following commands:
+
+* `pdf-markdown --cssToPath <target directory>`
+* `pdf-markdown --cfgToPath <target directory>`
+
 ## Installation
 
 `npm install -g pdf-markdown`
