@@ -1,11 +1,21 @@
 {
-  "name": "mdtest",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "start": "node index.js"
+  "name": "pdf-markdown",
+  "description": "Convert one or more Markdown files into a single PDF file",
+  "version": "0.1.1",
+  "author": "Ulf Byskov",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/UBy/pdf-mrkdwn.git"
   },
+  "main": "bin/pdf-markdown.js",
+  "scripts": {
+    "start": "node bin/pdf-markdown.js"
+  },
+  "bin": {
+    "pdf-markdown": "./bin/pdf-markdown.js"
+  },
+  "preferGlobal": true,
   "dependencies": {
     "json-beautify": "^1.1.1",
     "minimist": "^1.2.0",
@@ -20,8 +30,5 @@
     "unified": "^7.1.0",
     "vfile-reporter": "^5.1.1",
     "wkhtmltopdf": "^0.3.4"
-  },
-  "devDependencies": {},
-  "author": "",
-  "license": "ISC"
+  }
 }
